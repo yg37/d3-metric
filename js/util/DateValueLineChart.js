@@ -3,14 +3,13 @@ import {
     ANIMATION_PARAMS,
     AXIS_PARAMS,
     CIRCLE_PARAMS,
-    FONT_FAMILY,
     HEIGHT,
     LEGEND_PARAMS,
     MARGINS,
     PATH_PARAMS,
     TOOLTIP_PARAMS,
     WIDTH
-} from "./styleConstants.js";
+} from "./params.js";
 
 
 function drawDateValueLineChart(selection, dataUrl, xAxisLabel, yAxisLabel, bestPracticeValue, bestPracticeText) {
@@ -22,7 +21,7 @@ function drawDateValueLineChart(selection, dataUrl, xAxisLabel, yAxisLabel, best
         .attr("transform",
             "translate(" + MARGINS.left + "," + MARGINS.top + ")");
 
-    let tooltip = appendToolTipToSelection(selection.append("div"));
+    let tooltip = appendToolTipToSelection(selection);
 
     function handleTooltipMouseOut() {
         tooltip.transition()
@@ -61,9 +60,8 @@ function drawDateValueLineChart(selection, dataUrl, xAxisLabel, yAxisLabel, best
 
             svg.append("path")
                 .datum(data)
+                .attr("class", "path")
                 .attr("fill", "none")
-                .attr("stroke", PATH_PARAMS.STROKE)
-                .attr("stroke-width", PATH_PARAMS.STROKE_WIDTH)
                 .attr("d", d3.line()
                     .x(d => x(d.date))
                     .y(d => y(d.metric))
@@ -71,10 +69,8 @@ function drawDateValueLineChart(selection, dataUrl, xAxisLabel, yAxisLabel, best
 
             svg.append("path")
                 .datum(data)
-                .style("stroke-dasharray", PATH_PARAMS.STROKE_DASHARRAY)
+                .attr("class", "path dashed")
                 .attr("fill", "none")
-                .attr("stroke", PATH_PARAMS.STROKE)
-                .attr("stroke-width", PATH_PARAMS.STROKE_WIDTH)
                 .attr("d", d3.line()
                     .x(d => x(d.date))
                     .y(() => y(bestPracticeValue))
@@ -85,41 +81,31 @@ function drawDateValueLineChart(selection, dataUrl, xAxisLabel, yAxisLabel, best
                 .data(data)
                 .enter()
                 .append("circle")
-                .attr("cx", function (d) {
-                    return x(d.date)
-                })
-                .attr("cy", function (d) {
-                    return y(d.metric)
-                })
+                .attr("class", "circle")
+                .attr("cx", (d) => x(d.date))
+                .attr("cy", (d) => y(d.metric))
                 .attr("r", CIRCLE_PARAMS.RADIUS)
-                .attr("fill", CIRCLE_PARAMS.STROKE)
                 .on("mouseover", handleTooltipMouseOver)
                 .on("mouseout", handleTooltipMouseOut);
 
             svg.append("text")
+                .attr("class", "x-axis")
                 .attr("x", WIDTH / 2)
                 .attr("y", HEIGHT + MARGINS.bottom)
                 .style("text-anchor", "middle")
-                .style("font-size", AXIS_PARAMS.FONT_SIZE)
-                .style("font-weight", AXIS_PARAMS.FONT_WEIGHT)
-                .style("font-family", FONT_FAMILY)
                 .text(xAxisLabel);
 
             svg.append("text")
+                .attr("class", "y-axis")
                 .attr("transform", "rotate(-90)")
                 .attr("y", 0 - MARGINS.left)
                 .attr("x", 0 - (HEIGHT / 2))
                 .attr("dy", "1em")
-                .style("font-size", AXIS_PARAMS.FONT_SIZE)
-                .style("font-weight", AXIS_PARAMS.FONT_WEIGHT)
-                .style("font-family", FONT_FAMILY)
                 .text(yAxisLabel);
 
             svg.append("path")
-                .style("stroke-dasharray", PATH_PARAMS.STROKE_DASHARRAY)
+                .attr("class", "path dashed")
                 .attr("fill", "none")
-                .attr("stroke", PATH_PARAMS.STROKE)
-                .attr("stroke-width", PATH_PARAMS.STROKE_WIDTH)
                 .attr("d", PATH_PARAMS.LEGEND_PATH);
             svg.append("text")
                 .attr("x", LEGEND_PARAMS.TEXT_X)

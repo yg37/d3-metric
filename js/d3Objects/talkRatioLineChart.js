@@ -1,5 +1,5 @@
 import {drawDateValueLineChart} from "../util/DateValueLineChart.js";
-import {BEST_PRACTICE_MAXIMUM_TEXT,} from "../util/styleConstants.js";
+import {BEST_PRACTICE_MAXIMUM_TEXT,} from "../util/params.js";
 
 const DIV_ID = "#talk-ratio";
 const BEST_PRACTICE_VALUE = 1.05;
