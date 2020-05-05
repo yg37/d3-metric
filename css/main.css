@@ -16,6 +16,7 @@ body {
 
 .tooltip {
   font-family: sans-serif;
+  position: absolute
 }
 
 .circle {
@@ -31,4 +32,9 @@ body {
   stroke-dasharray: 5, 5;
   stroke-width: 1.5;
   stroke: #69b3a2;
+}
+
+.legend-text {
+  font-family: sans-serif;
+  font-size: 15px;
 }

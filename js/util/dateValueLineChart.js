@@ -11,7 +11,6 @@ import {
     WIDTH
 } from "./params.js";
 
-
 function drawDateValueLineChart(selection, dataUrl, xAxisLabel, yAxisLabel, bestPracticeValue, bestPracticeText) {
     let svg = selection
         .append("svg")
@@ -35,8 +34,8 @@ function drawDateValueLineChart(selection, dataUrl, xAxisLabel, yAxisLabel, best
             .style("opacity", .9);
         tooltip.html("Date: " + d.date.toDateString() + "<br/>" +
             "Value: " + d.metric.toFixed(2).toString())
-            .style("left", d3.select(this).attr("cx") + "px")
-            .style("top", d3.select(this).attr("cy") - TOOLTIP_PARAMS.LOCATION_BUFFER + "px");
+            .style("left", d3.event.pageX + TOOLTIP_PARAMS.LOCATION_BUFFER + "px")
+            .style("top", d3.event.pageY + "px");
     }
 
     d3.csv(dataUrl,
@@ -108,10 +107,10 @@ function drawDateValueLineChart(selection, dataUrl, xAxisLabel, yAxisLabel, best
                 .attr("fill", "none")
                 .attr("d", PATH_PARAMS.LEGEND_PATH);
             svg.append("text")
+                .attr("class", "legend-text")
                 .attr("x", LEGEND_PARAMS.TEXT_X)
                 .attr("y", LEGEND_PARAMS.TEXT_Y)
                 .text(bestPracticeText)
-                .style("font-size", LEGEND_PARAMS.LEGEND_FONT_SIZE)
                 .attr("alignment-baseline", "middle");
         });
 }

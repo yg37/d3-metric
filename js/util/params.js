@@ -2,9 +2,9 @@ let HEX_COLOR = "#69b3a2";
 
 export const BEST_PRACTICE_AVERAGE_TEXT = "Best Practice - Average";
 export const BEST_PRACTICE_MAXIMUM_TEXT = "Best Practice - Maximum";
-export const LEGEND_PARAMS = {LEGEND_FONT_SIZE: "13px", TEXT_X: 260, TEXT_Y: 30};
+export const LEGEND_PARAMS = {TEXT_X: 260, TEXT_Y: 30};
 export const PATH_PARAMS = {LEGEND_PATH: "M234 30, 250, 30"};
-export const CIRCLE_PARAMS = {RADIUS: 5};
+export const CIRCLE_PARAMS = {RADIUS: 6};
 export const AXIS_PARAMS = {BUFFER_PERCENTAGE: 0.5};
 export const ANIMATION_PARAMS = {MOUSE_OVER_DURATION: 200, MOUSE_OUT_DURATION: 200};
 export const TOOLTIP_PARAMS = {LOCATION_BUFFER: 20}

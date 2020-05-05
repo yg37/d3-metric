@@ -1,5 +1,5 @@
 import { BEST_PRACTICE_AVERAGE_TEXT} from "../util/params.js";
-import {drawDateValueLineChart} from "../util/DateValueLineChart.js";
+import {drawDateValueLineChart} from "../util/dateValueLineChart.js";
 const DIV_ID = "#silence-percentage";
 const DATA_URL = "../../data/silence-percentage.csv";
 const BEST_PRACTICE_VALUE = 11;
