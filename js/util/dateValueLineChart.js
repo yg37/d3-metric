@@ -1,4 +1,4 @@
-import {scaleTimeGenerator, appendToolTipToSelection} from "./graphicalObjectGenerator.js";
+import {appendToolTipToSelection} from "./graphicalObjectGenerator.js";
 import {
     ANIMATION_PARAMS,
     AXIS_PARAMS,
@@ -43,7 +43,7 @@ function drawDateValueLineChart(selection, dataUrl, xAxisLabel, yAxisLabel, best
             return {date: d3.utcParse("%Y-%m-%d")(csv.date), metric: parseFloat(csv.metric)}
         },
         function (data) {
-            let x = scaleTimeGenerator(data, WIDTH);
+            let x = d3.scaleTime().domain(d3.extent(data, (d) => d.date)).range([ 0, WIDTH ]);
             let yMax = d3.max(data, d => d.metric);
 
             svg.append("g")
