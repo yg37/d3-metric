@@ -1,12 +1,13 @@
 import {scaleTimeGenerator, appendToolTipToSelection} from "./graphicalObjectGenerator.js";
 
 import {
-    ANIMATION_STYLE,
-    AXIS_STYLE,
-    CIRCLE_STYLE,
-    HEIGHT, LEGEND_STYLE,
+    ANIMATION_PARAMS,
+    AXIS_PARAMS,
+    CIRCLE_PARAMS,
+    HEIGHT,
+    LEGEND_PARAMS,
     MARGINS,
-    PATH_STYLE,
+    PATH_PARAMS,
     WIDTH
 } from "./styleConstants.js";
 
@@ -16,13 +17,13 @@ function drawDatePercentageLineChart(selection, dataUrl, xAxisLabel, yAxisLabel,
 
     function handleSilencePercentageTooltipMouseOut() {
         tooltip.transition()
-            .duration(ANIMATION_STYLE.MOUSE_OUT_DURATION)
+            .duration(ANIMATION_PARAMS.MOUSE_OUT_DURATION)
             .style("opacity", 0)
     }
 
     function handleSilencePercentageTooltipMouseOver(d) {
         tooltip.transition()
-            .duration(ANIMATION_STYLE.MOUSE_OVER_DURATION)
+            .duration(ANIMATION_PARAMS.MOUSE_OVER_DURATION)
             .style("opacity", .9);
         tooltip.html("Date: " + d.date.toDateString() + "<br/>" +
             "Value: " + d.metric.toString() + "%")
@@ -47,7 +48,7 @@ function drawDatePercentageLineChart(selection, dataUrl, xAxisLabel, yAxisLabel,
             let yMax = d3.max(data, (d) => d.metric);
 
             let y = d3.scaleLinear()
-                .domain([0, yMax + yMax * AXIS_STYLE.BUFFER_PERCENTAGE])
+                .domain([0, yMax + yMax * AXIS_PARAMS.BUFFER_PERCENTAGE])
                 .range([HEIGHT, 0]);
 
             let formatPercent = d3.format("%");
@@ -65,8 +66,8 @@ function drawDatePercentageLineChart(selection, dataUrl, xAxisLabel, yAxisLabel,
             svg.append("path")
                 .datum(data)
                 .attr("fill", "none")
-                .attr("stroke", PATH_STYLE.STROKE)
-                .attr("stroke-width", PATH_STYLE.STROKE_WIDTH)
+                .attr("stroke", PATH_PARAMS.STROKE)
+                .attr("stroke-width", PATH_PARAMS.STROKE_WIDTH)
                 .attr("d", d3.line()
                     .x(d => x(d.date))
                     .y(d => y(d.metric))
@@ -75,10 +76,10 @@ function drawDatePercentageLineChart(selection, dataUrl, xAxisLabel, yAxisLabel,
             // create the best practice value line
             svg.append("path")
                 .datum(data)
-                .style("stroke-dasharray", PATH_STYLE.STROKE_DASHARRAY)
+                .style("stroke-dasharray", PATH_PARAMS.STROKE_DASHARRAY)
                 .attr("fill", "none")
-                .attr("stroke", PATH_STYLE.STROKE)
-                .attr("stroke-width", PATH_STYLE.STROKE_WIDTH)
+                .attr("stroke", PATH_PARAMS.STROKE)
+                .attr("stroke-width", PATH_PARAMS.STROKE_WIDTH)
                 .attr("d", d3.line()
                     .x(d => x(d.date))
                     .y(() => y(bestPracticeValue))
@@ -92,8 +93,8 @@ function drawDatePercentageLineChart(selection, dataUrl, xAxisLabel, yAxisLabel,
                 .append("circle")
                 .attr("cx", d => x(d.date))
                 .attr("cy", d => y(d.metric))
-                .attr("r", CIRCLE_STYLE.RADIUS)
-                .attr("fill", CIRCLE_STYLE.STROKE)
+                .attr("r", CIRCLE_PARAMS.RADIUS)
+                .attr("fill", CIRCLE_PARAMS.STROKE)
                 .on("mouseover", handleSilencePercentageTooltipMouseOver)
                 .on("mouseout", handleSilencePercentageTooltipMouseOut);
 
@@ -102,9 +103,9 @@ function drawDatePercentageLineChart(selection, dataUrl, xAxisLabel, yAxisLabel,
                 .attr("x", WIDTH / 2)
                 .attr("y", HEIGHT + MARGINS.bottom)
                 .style("text-anchor", "middle")
-                .style("font-size",  AXIS_STYLE.FONT_SIZE)
-                .style("font-weight",  AXIS_STYLE.FONT_WEIGHT)
-                .style("font-family", AXIS_STYLE.FONT_FAMILY)
+                .style("font-size",  AXIS_PARAMS.FONT_SIZE)
+                .style("font-weight",  AXIS_PARAMS.FONT_WEIGHT)
+                .style("font-family", AXIS_PARAMS.FONT_FAMILY)
                 .text(xAxisLabel);
 
             // add y axis label
@@ -113,25 +114,25 @@ function drawDatePercentageLineChart(selection, dataUrl, xAxisLabel, yAxisLabel,
                 .attr("y", 0 - MARGINS.left)
                 .attr("x", 0 - (HEIGHT / 2))
                 .attr("dy", "1em")
-                .style("font-size", AXIS_STYLE.FONT_SIZE)
-                .style("font-weight", AXIS_STYLE.FONT_WEIGHT)
-                .style("font-family", AXIS_STYLE.FONT_FAMILY)
+                .style("font-size", AXIS_PARAMS.FONT_SIZE)
+                .style("font-weight", AXIS_PARAMS.FONT_WEIGHT)
+                .style("font-family", AXIS_PARAMS.FONT_FAMILY)
                 .text(yAxisLabel);
 
             // add legend
             svg.append("path")
-                .style("stroke-dasharray", PATH_STYLE.STROKE_DASHARRAY)
+                .style("stroke-dasharray", PATH_PARAMS.STROKE_DASHARRAY)
                 .attr("fill", "none")
-                .attr("stroke", PATH_STYLE.STROKE)
-                .attr("stroke-width", PATH_STYLE.STROKE_WIDTH)
-                .attr("d", "M234 30, 250, 30");
+                .attr("stroke", PATH_PARAMS.STROKE)
+                .attr("stroke-width", PATH_PARAMS.STROKE_WIDTH)
+                .attr("d", LEGEND_PARAMS.LEGEND_PATH);
 
             // add legend text
             svg.append("text")
-                .attr("x", 260)
-                .attr("y", 30)
+                .attr("x", LEGEND_PARAMS.TEXT_X)
+                .attr("y", LEGEND_PARAMS.TEXT_Y)
                 .text(bestPracticeText)
-                .style("font-size", LEGEND_STYLE.LEGEND_FONT_SIZE)
+                .style("font-size", LEGEND_PARAMS.LEGEND_FONT_SIZE)
                 .attr("alignment-baseline", "middle");
         });
 }
