@@ -1,6 +1,7 @@
 
 
-const appendToolTipToSelection = selection => selection
+const appendToolTipToSelection = selection =>
+    selection
     .append("div")
     .attr("class", "tooltip")
     .style("opacity", 0)
