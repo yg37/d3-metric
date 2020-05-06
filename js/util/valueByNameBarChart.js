@@ -62,19 +62,19 @@ function drawValueByNameBarChart(selection, dataUrl, yAxisLabel) {
             .data(data)
             .enter()
             .append("rect")
-            .attr("class", "rect")
+            .attr("class", "bar")
             .attr("x", (d) => x(d.name))
             .attr("y", (d) => y(d.metric))
             .attr("width", x.bandwidth())
             .attr("height", (d) => HEIGHT - y(d.metric))
             .on("mouseover", (d, i) => {
-                svg.selectAll(".rect")
+                svg.selectAll(".bar")
                     .filter((anotherD, anotherIdx) => anotherIdx !== i)
                     .style('fill', "#9dcdc2");
                 tip.show(d);
             })
             .on("mouseout", (d, i) => {
-                svg.selectAll(".rect")
+                svg.selectAll(".bar")
                     .style('fill', "#69b3a2");
                 tip.show(d);
                 tip.hide(d);
