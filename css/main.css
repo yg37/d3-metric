@@ -2,13 +2,13 @@ body {
   background-color: #ddd;
 }
 
-.y-axis {
+.y-axis-text {
   font-family: sans-serif;
   font-weight: bold;
   font-size: 15px;
 }
 
-.x-axis {
+.x-axis-text {
   font-family: sans-serif;
   font-weight: bold;
   font-size: 15px;

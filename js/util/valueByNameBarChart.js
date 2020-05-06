@@ -1,19 +1,14 @@
 import {
-    ANIMATION_PARAMS,
     AXIS_PARAMS,
-    CIRCLE_PARAMS,
     HEIGHT,
-    LEGEND_PARAMS,
     MARGINS,
-    PATH_PARAMS,
-    TOOLTIP_PARAMS,
     WIDTH
 } from "./params.js";
+import {calcXYForLongYLabel} from "./calculateLocation.js";
 
 
-function drawValueByNameBarChart(selection, dataUrl) {
+function drawValueByNameBarChart(selection, dataUrl, yAxisLabel) {
 
-// append the svg object to the body of the page
     let svg = selection
         .append("svg")
         .attr("width", WIDTH + MARGINS.left + MARGINS.right)
@@ -22,16 +17,19 @@ function drawValueByNameBarChart(selection, dataUrl) {
         .attr("transform",
             "translate(" + MARGINS.left + "," + MARGINS.top + ")");
 
-    d3.csv(dataUrl, function(data) {
+    d3.csv(dataUrl, function (csv) {
+        return {name: csv.name, metric: parseFloat(csv.metric)}
+        },
+        function(data) {
         let x = d3.scaleBand()
             .range([0, WIDTH])
-            .domain(data.map(function(d) { return d.value; }))
+            .domain(data.map(function(d) { return d.name; }))
             .padding(0.2);
 
         let yMax = d3.max(data, d => d.metric);
 
         svg.append("g")
-            .attr("transform", "translate(0," + height + ")")
+            .attr("transform", "translate(0," + HEIGHT + ")")
             .call(d3.axisBottom(x))
             .selectAll("text")
             .attr("transform", "translate(-10,0)rotate(-45)")
@@ -42,6 +40,14 @@ function drawValueByNameBarChart(selection, dataUrl) {
             .domain([0, yMax + yMax * AXIS_PARAMS.BUFFER_PERCENTAGE])
             .range([ HEIGHT, 0]);
 
+        svg.append("text")
+            .attr("class", "y-axis-text")
+            .attr("transform", "rotate(-90)")
+            .attr("x", calcXYForLongYLabel().x)
+            .attr("y", calcXYForLongYLabel().y)
+            .attr("dy", "1em")
+            .text(yAxisLabel);
+
         svg.append("g")
             .call(d3.axisLeft(y));
 
@@ -49,13 +55,14 @@ function drawValueByNameBarChart(selection, dataUrl) {
             .data(data)
             .enter()
             .append("rect")
-            .attr("x", function(d) { return x(d.name); })
-            .attr("y", function(d) { return y(d.value); })
+            .attr("class", "rect")
+            .attr("x", (d) => x(d.name))
+            .attr("y", (d) => y(d.metric))
             .attr("width", x.bandwidth())
-            .attr("height", function(d) { return height - y(d.Value); })
+            .attr("height", (d) => HEIGHT - y(d.metric))
             .attr("fill", "#69b3a2")
 
     })
 }
 
-export {drawBarChart};
+export {drawValueByNameBarChart};

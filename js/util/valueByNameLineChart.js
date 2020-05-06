@@ -11,6 +11,8 @@ import {
     WIDTH
 } from "./params.js";
 
+import {calcXYForLongYLabel} from "./calculateLocation.js";
+
 function drawDateValueLineChart(selection, dataUrl, xAxisLabel, yAxisLabel, bestPracticeValue, bestPracticeText) {
     let svg = selection
         .append("svg")
@@ -88,17 +90,17 @@ function drawDateValueLineChart(selection, dataUrl, xAxisLabel, yAxisLabel, best
                 .on("mouseout", handleTooltipMouseOut);
 
             svg.append("text")
-                .attr("class", "x-axis")
+                .attr("class", "x-axis-text")
                 .attr("x", WIDTH / 2)
-                .attr("y", HEIGHT + MARGINS.bottom)
+                .attr("y", HEIGHT + MARGINS.bottom / 2)
                 .style("text-anchor", "middle")
                 .text(xAxisLabel);
 
             svg.append("text")
-                .attr("class", "y-axis")
+                .attr("class", "y-axis-text")
                 .attr("transform", "rotate(-90)")
-                .attr("y", 0 - MARGINS.left)
-                .attr("x", 0 - (HEIGHT / 2))
+                .attr("x", calcXYForLongYLabel().x)
+                .attr("y", calcXYForLongYLabel().y)
                 .attr("dy", "1em")
                 .text(yAxisLabel);
 
@@ -106,6 +108,7 @@ function drawDateValueLineChart(selection, dataUrl, xAxisLabel, yAxisLabel, best
                 .attr("class", "path dashed")
                 .attr("fill", "none")
                 .attr("d", PATH_PARAMS.LEGEND_PATH);
+
             svg.append("text")
                 .attr("class", "legend-text")
                 .attr("x", LEGEND_PARAMS.TEXT_X)
