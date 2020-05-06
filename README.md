@@ -5,4 +5,4 @@ Getting started
 4. `npm start` - starts server 
 
 Requirements:
-node version 11.*.*
+node version 11.&ast;.&ast;
