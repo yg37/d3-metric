@@ -4,14 +4,20 @@ import {
     MARGINS,
     WIDTH
 } from "./params.js";
+import {TOOLTIP_PARAMS, ANIMATION_PARAMS} from "./params.js";
+import {appendToolTipToSelection} from "./graphicalObjectGenerator.js";
+
 
 function drawPieChart(selection) {
-    let data = [{"inbound":"","count":487},{"direction":"outbound","count":5132}];
+
+    let data = [{"direction":"Inbound","count":487},{"direction":"Outbound","count":5132}];
+
+    let tooltip = appendToolTipToSelection(selection);
 
     let r = Math.min(WIDTH, HEIGHT) / 2 - MARGINS.top;
 
     let color = d3.scaleOrdinal()
-        .range(["#2C93E8", "#F56C4E"]);
+        .range(["#6CA6CD", "#78AB46"]);
 
     let labelArc = d3.arc()
         .outerRadius(r - 40)
@@ -40,14 +46,40 @@ function drawPieChart(selection) {
         .append("g")
         .attr("class", "arc");
 
-    arcs.append("path")
+    let path = arcs.append("path")
         .attr("d", arc)
+        .attr("class", "arc-path")
         .style("fill", (d) => color(d.data.direction));
 
-    arcs.append("text")
-        .attr("transform", (d) => "translate(" + labelArc.centroid(d) + ")")
-        .text((d) => d.data.direction)
-        .style("fill", "#fff");
+    function handleTooltipMouseOver(d) {
+        let total = d3.sum(data.map((d) => d.count));
+        tooltip.html(
+            "Direction: " + d.data.direction + "<br/>" +
+            "Count: " + d.data.count + "<br/>" +
+            "Percentage: " + (d.data.count / total).toFixed(2).toString() + "<br/>");
+        tooltip.style('display', 'block');
+        tooltip.style('opacity',2);
+    }
+
+    function handleTooltipMouseMove(d, i) {
+        tooltip.transition()
+            .duration(ANIMATION_PARAMS.MOUSE_OVER_DURATION)
+            .style("opacity", .9);
+        tooltip
+            .style("left", d3.event.pageX + TOOLTIP_PARAMS.LOCATION_BUFFER + "px")
+            .style("top", d3.event.pageY + "px");
+        d3.selectAll(".arc-path")
+            .filter((anotherD, anotherIdx) => anotherIdx !== i)
+            .style('fill', "#9dcdc2");
+    }
+    path.on('mouseover', handleTooltipMouseOver);
+
+    path.on('mousemove', handleTooltipMouseMove);
+
+    path.on('mouseout', function() {
+        tooltip.style('display', 'none');
+        tooltip.style('opacity',0);
+    });
 
 }
 
